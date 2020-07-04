@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"user-management-api/controllers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,9 +9,7 @@ import (
 func main() {
 	route := gin.Default()
 
-	route.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"data": "hello world"})
-	})
+	route.GET("/", controllers.HomeController)
 
 	route.Run()
 }
