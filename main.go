@@ -9,7 +9,8 @@ import (
 func main() {
 	route := gin.Default()
 
-	route.GET("/", controllers.HomeController)
+	route.GET("/", controllers.Home)
+	route.GET("/user/:UserID", controllers.GetUser)
 
 	route.Run()
 }
