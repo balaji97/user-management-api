@@ -3,7 +3,7 @@ module user-management-api
 go 1.14
 
 require (
-	github.com/aws/aws-sdk-go v1.33.5 // indirect
+	github.com/aws/aws-sdk-go v1.33.5
 	github.com/gin-gonic/gin v1.6.3
 	github.com/google/uuid v1.1.1
 	github.com/jinzhu/gorm v1.9.14 // indirect
