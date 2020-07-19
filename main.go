@@ -9,11 +9,8 @@ import (
 )
 
 func main() {
-	err := repository.InitializeRepository()
-	if(err != nil) {
-		log.Fatal(err)
-	}
-
+	initModules()
+	
 	route := gin.Default()
 
 	route.GET("/", controllers.Home)
@@ -21,4 +18,12 @@ func main() {
 	route.POST("/user", controllers.AddUser)
 
 	route.Run()
+}
+
+func initModules() {
+	err := repository.InitializeRepository()
+	if(err != nil) {
+		log.Fatal(err)
+	}
+	controllers.InitializeControllers()
 }
