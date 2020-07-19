@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var userRepository repository.UserRepository
+
 // Home - GET("/")
 func Home(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"data": "Hello World!"})
@@ -16,7 +18,7 @@ func Home(context *gin.Context) {
 
 // GetUser - GET("/user/{UserID}") - Return User as JSON object for given ID
 func GetUser(context *gin.Context) {
-	user, err := repository.GetRepository().GetUser(context.Param("UserID"))
+	user, err := userRepository.GetUser(context.Param("UserID"))
 	if(err != nil) {
 		context.JSON(http.StatusInternalServerError, gin.H{"data": err.Error()})
 		return
@@ -32,7 +34,7 @@ func AddUser(context *gin.Context) {
 
 	createdUser := createUser(user)
 
-	err := repository.GetRepository().AddUser(createdUser)
+	err := userRepository.AddUser(createdUser)
 
 	if(err != nil) {
 		context.JSON(http.StatusInternalServerError, gin.H{"data": err.Error()})
@@ -44,4 +46,9 @@ func AddUser(context *gin.Context) {
 
 func createUser(user domain.RequestBody) entity.User{
 	return entity.User{UserID: uuid.UUID.String(uuid.NewV4()),Name: user.Name}
+}
+
+// InitializeControllers - Intitialize the dependencies of controllers module
+func InitializeControllers() {
+	userRepository = repository.GetRepository()
 }
