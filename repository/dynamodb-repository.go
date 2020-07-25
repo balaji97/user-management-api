@@ -72,19 +72,16 @@ func buildDynamoDBPutInput(user entity.User) (*dynamodb.PutItemInput, error) {
 	return &dynamodb.PutItemInput{Item: item, TableName: aws.String(tableName)}, nil
 }
 
-func initializeDynamoDBRepository() error{
+func init() {
 	session, err := session.NewSession(&aws.Config{
 		Region: aws.String(awsRegion),
 		Credentials: credentials.NewSharedCredentials(awsCredentialsPath, awsProfile)})
 
 	if(err != nil) {
-		return err
+		panic(err)
 	}
 
-	dynamoDBRepository = &DynamoDBRepository{
-		repository: dynamodb.New(session)} 
-	
-	return nil
+	dynamoDBRepository = &DynamoDBRepository{repository: dynamodb.New(session)} 
 }
 
 var dynamoDBRepository *DynamoDBRepository

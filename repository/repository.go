@@ -10,11 +10,6 @@ type UserRepository interface {
 	GetUser(UserID string) (*entity.User, error)
 }
 
-//InitializeRepository - Set up connection to DynamoDB repository
-func InitializeRepository() error{
-	return initializeDynamoDBRepository()
-}
-
 //GetRepository - Returns an implementation of UserRepository
 func GetRepository() *DynamoDBRepository {
 	return dynamoDBRepository

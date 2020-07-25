@@ -48,7 +48,6 @@ func createUser(user domain.RequestBody) entity.User{
 	return entity.User{UserID: uuid.UUID.String(uuid.NewV4()),Name: user.Name}
 }
 
-// InitializeControllers - Intitialize the dependencies of controllers module
-func InitializeControllers() {
+func init() {
 	userRepository = repository.GetRepository()
 }
