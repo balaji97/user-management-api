@@ -7,18 +7,8 @@ import (
 	"user-management-api/repository"
 )
 
-//AddUserStatus - ENUM to represent status of AddUser function
-type AddUserStatus string
-
 const (
-	//AddUserSuccess - 
-	AddUserSuccess = "User added successfully"
-	//UserAlreadyExists - 
-	UserAlreadyExists = "User already exists"
-	//InvalidUserID -
-	InvalidUserID = "UserID format not valid"
-	//InternalError -
-	InternalError = "Internal Error"
+	conditionalFailed = "ConditionalCheckFailedException: The conditional request failed"
 )
 
 //GetUser - Fetch user for given user ID from DB
@@ -32,24 +22,28 @@ func GetUser(userID string) (*entity.User, error) {
 }
 
 //AddUser - Add user to DB
-func AddUser(requestBody domain.RequestBody) (AddUserStatus, error) {
+func AddUser(requestBody domain.RequestBody) (domain.AddUserStatus, error) {
 	if (!isValidUserID(requestBody.UserID)) {
-		return InvalidUserID, nil
+		return domain.InvalidUserID, nil
 	}
 	
 	createdUser, err := createUser(requestBody)
 
 	if(err != nil) {
-		return InternalError, err
+		return domain.InternalError, err
 	}
 	
 	err = userRepository.AddUser(*createdUser)
 
 	if(err != nil) {
-		return InternalError, err
+		if(err.Error() == conditionalFailed) {
+			return domain.UserAlreadyExists, err
+		}
+		
+		return domain.InternalError, err
 	}
 
-	return AddUserSuccess, nil
+	return domain.AddUserSuccess, nil
 }
 
 //AuthenticateUser - Authenticate given UserID and Password
