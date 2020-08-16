@@ -16,3 +16,4 @@
 .idea*
 .aws*
 .vscode*
+__debug_bin

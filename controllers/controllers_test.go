@@ -9,9 +9,11 @@ import (
 
 func TestCreateUser(t *testing.T) {
 	requestBody := domain.RequestBody{Name: "someName"}
-	user := createUser(requestBody)
+	user, err := createUser(requestBody)
 
+	assert.Nil(t, err)
 	assert.Equal(t, requestBody.Name, user.Name)
 	assert.NotEmpty(t, user.UserID)
+	assert.NotEmpty(t, user.Password)
 	
 }

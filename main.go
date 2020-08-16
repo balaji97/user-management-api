@@ -12,6 +12,7 @@ func main() {
 	route.GET("/", controllers.Home)
 	route.GET("/user/:UserID", controllers.GetUser)
 	route.POST("/user", controllers.AddUser)
+	route.GET("/auth/user/:UserID/password/:Password", controllers.AuthenticateUser)
 
 	route.Run()
 }
