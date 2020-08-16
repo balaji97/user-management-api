@@ -32,6 +32,8 @@ func (dynamoDBRepository *DynamoDBRepository) GetUser(UserID string) (*entity.Us
 	getResult, err := dynamoDBRepository.repository.GetItem(getItemInput)
 	if(err != nil) {
 		return nil, err
+	} else if(getResult.Item == nil) {
+		return nil, nil
 	}
 
 	err = dynamodbattribute.UnmarshalMap(getResult.Item, &user)
