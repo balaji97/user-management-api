@@ -61,7 +61,7 @@ func AuthenticateUser(context *gin.Context) {
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(context.Param("Password")))
 	if(err != nil) {
-		context.JSON(http.StatusUnauthorized, gin.H{"data": err.Error()})
+		context.JSON(http.StatusUnauthorized, gin.H{"data": "Authentication failed"})
 	}
 
 	context.JSON(http.StatusOK, gin.H{"data": user})
