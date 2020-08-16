@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"user-management-api/entity"
 	"user-management-api/domain"
 	"user-management-api/repository"
@@ -32,9 +33,14 @@ func AddUser(context *gin.Context) {
 	var user domain.RequestBody
 	context.BindJSON(&user)
 
-	createdUser := createUser(user)
+	createdUser, err := createUser(user)
 
-	err := userRepository.AddUser(createdUser)
+	if(err != nil) {
+		context.JSON(http.StatusInternalServerError, gin.H{"data": err.Error()})
+		return
+	}
+
+	err = userRepository.AddUser(*createdUser)
 
 	if(err != nil) {
 		context.JSON(http.StatusInternalServerError, gin.H{"data": err.Error()})
@@ -44,8 +50,18 @@ func AddUser(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"data": createdUser})
 }
 
-func createUser(user domain.RequestBody) entity.User{
-	return entity.User{UserID: uuid.UUID.String(uuid.NewV4()),Name: user.Name}
+func createUser(user domain.RequestBody) (*entity.User, error) {
+	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+	if(err != nil) {
+		return nil, err
+	}
+
+	return &entity.User{
+		UserID: uuid.UUID.String(uuid.NewV4()),
+		Name: user.Name,
+		Password: string(password),
+	}, nil
 }
 
 func init() {

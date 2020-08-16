@@ -2,7 +2,7 @@ package entity
 
 //User - Entity object to store User details
 type User struct {
-	UserID, Name string
+	UserID, Name, Password string
 }
 
 //UserKey - Object to pass DynamoDB key of User

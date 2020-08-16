@@ -10,6 +10,7 @@ require (
 	github.com/jinzhu/gorm v1.9.14 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/stretchr/testify v1.6.1
+	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	golang.org/x/text v0.3.3 // indirect
 )
