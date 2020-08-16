@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+	"user-management-api/domain"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -15,6 +17,7 @@ const (
 	awsProfile = "user-management-api"
 	tableName = "users"
 	putConditionalExpression = "attribute_not_exists(UserID)"
+	conditionalFailed = "ConditionalCheckFailedException: The conditional request failed"
 )
 
 //DynamoDBRepository - Implementation of UserRepository
@@ -53,6 +56,12 @@ func (dynamoDBRepository *DynamoDBRepository) AddUser(User entity.User) error{
 	}
 
 	_, err = dynamoDBRepository.repository.PutItem(putItemInput)
+
+	if(err != nil) {
+		if(err.Error() == conditionalFailed) {
+			return errors.New(domain.UserAlreadyExists)
+		}
+	}
 
 	return err
 }

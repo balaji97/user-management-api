@@ -7,10 +7,6 @@ import (
 	"user-management-api/repository"
 )
 
-const (
-	conditionalFailed = "ConditionalCheckFailedException: The conditional request failed"
-)
-
 //GetUser - Fetch user for given user ID from DB
 func GetUser(userID string) (*entity.User, error) {
 	user, err := userRepository.GetUser(userID)
@@ -36,10 +32,10 @@ func AddUser(requestBody domain.RequestBody) (domain.AddUserStatus, error) {
 	err = userRepository.AddUser(*createdUser)
 
 	if(err != nil) {
-		if(err.Error() == conditionalFailed) {
+		if(err.Error() == domain.UserAlreadyExists) {
 			return domain.UserAlreadyExists, err
 		}
-		
+
 		return domain.InternalError, err
 	}
 
