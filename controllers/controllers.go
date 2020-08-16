@@ -35,16 +35,16 @@ func AddUser(context *gin.Context) {
 	addUserStatus, err := service.AddUser(requestBody)
 	
 	switch(addUserStatus) {
-	case service.AddUserSuccess:
-		context.JSON(http.StatusOK, gin.H{"message": service.AddUserSuccess})
-	case service.InvalidUserID:
-		context.JSON(http.StatusBadRequest, gin.H{"message": service.InvalidUserID})
-	case service.UserAlreadyExists:
-		context.JSON(http.StatusBadRequest, gin.H{"message": service.UserAlreadyExists})
-	case service.InternalError:
+	case domain.AddUserSuccess:
+		context.JSON(http.StatusOK, gin.H{"message": domain.AddUserSuccess})
+	case domain.InvalidUserID:
+		context.JSON(http.StatusBadRequest, gin.H{"message": domain.InvalidUserID})
+	case domain.UserAlreadyExists:
+		context.JSON(http.StatusBadRequest, gin.H{"message": domain.UserAlreadyExists})
+	case domain.InternalError:
 		context.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 	default:
-		context.JSON(http.StatusInternalServerError, gin.H{"message": service.InternalError})
+		context.JSON(http.StatusInternalServerError, gin.H{"message": domain.InternalError})
 	}
 }
 

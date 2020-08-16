@@ -14,6 +14,7 @@ const (
 	awsCredentialsPath =  "/Users/balaji/.aws/credentials"
 	awsProfile = "user-management-api"
 	tableName = "users"
+	putConditionalExpression = "attribute_not_exists(UserID)"
 )
 
 //DynamoDBRepository - Implementation of UserRepository
@@ -71,7 +72,13 @@ func buildDynamoDBPutInput(user entity.User) (*dynamodb.PutItemInput, error) {
 		return nil, err
 	}
 
-	return &dynamodb.PutItemInput{Item: item, TableName: aws.String(tableName)}, nil
+	conditionalExpression := putConditionalExpression
+
+	return &dynamodb.PutItemInput{
+		Item: item,
+		TableName: aws.String(tableName),
+		ConditionExpression: &conditionalExpression,
+		}, nil
 }
 
 func init() {
