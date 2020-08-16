@@ -1,0 +1,10 @@
+mode: set
+user-management-api/controllers/controllers.go:15.33,17.2 1 0
+user-management-api/controllers/controllers.go:20.36,22.17 2 0
+user-management-api/controllers/controllers.go:27.2,27.50 1 0
+user-management-api/controllers/controllers.go:22.17,25.3 2 0
+user-management-api/controllers/controllers.go:31.36,39.17 5 0
+user-management-api/controllers/controllers.go:44.2,44.57 1 0
+user-management-api/controllers/controllers.go:39.17,42.3 2 0
+user-management-api/controllers/controllers.go:47.53,49.2 1 1
+user-management-api/controllers/controllers.go:51.13,53.2 1 1
