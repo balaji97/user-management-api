@@ -50,6 +50,23 @@ func AddUser(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"data": createdUser})
 }
 
+//AuthenticateUser - Checks if given User ID and password are valid
+func AuthenticateUser(context *gin.Context) {
+
+	user, err := userRepository.GetUser(context.Param("UserID"))
+	if(err != nil) {
+		context.JSON(http.StatusInternalServerError, gin.H{"data": err.Error()})
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(context.Param("Password")))
+	if(err != nil) {
+		context.JSON(http.StatusUnauthorized, gin.H{"data": err.Error()})
+	}
+
+	context.JSON(http.StatusOK, gin.H{"data": user})
+}
+
 func createUser(user domain.RequestBody) (*entity.User, error) {
 	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
